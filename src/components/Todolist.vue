@@ -22,26 +22,35 @@ import AddTodo from './AddTodo.vue';
   },
 })
 export default class Todolist extends Vue {
-  todos: Array < Todo > = [];
+  todos: Todo[] = JSON.parse(localStorage.getItem("todoData"));
+
   markComplete(id: number) {
     this.todos = this.todos.map(todo => {
       if (todo.id === id) todo.completed = !todo.completed
       return todo
     })
+    const newTodo = this.todos
+    localStorage.setItem('todoData', JSON.stringify(newTodo))
   }
-  updateTodo(id: number, updateTodo: string) {
+
+  updateTodo(indexTodo: number, updateTodo: string) {
     this.todos = this.todos.map(todo => {
-      if (todo.id === id) todo.title = updateTodo
+      if (indexTodo === todo.id) todo.title = updateTodo
       return todo
     })
+    const newTodo = this.todos
+    localStorage.setItem('todoData', JSON.stringify(newTodo))
   }
+
   deleteTodo(id: number) {
-    const index = this.todos.findIndex(todo => id !== todo.id)
+    const index = this.todos.findIndex(todo => id == todo.id)
     this.todos.splice(index, 1)
+    localStorage.setItem('todoData', JSON.stringify(this.todos))
   }
+
   addTodo(newTodo: Todo) {
     this.todos.push(newTodo)
-    console.log(this.todos)
+    localStorage.setItem('todoData', JSON.stringify(this.todos))
   }
 }
 </script>
